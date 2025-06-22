@@ -1,0 +1,40 @@
+@startuml src
+' 主要部分
+interface BaseAnalyzer
+interface BaseDataUnit
+interface BaseDataGroup
+
+class BaseAnalyzer implements Analyzer
+class BaseDataUnit implements DataUnit
+class BaseDataGroup implements DataGroup
+
+' DataUnitFactory
+interface DataUnitFactory
+abstract BaseDataUnitFactory implements DataUnitFactory
+class DefaultDataUnitFactory extends BaseDataUnitFactory
+
+' DataGroupFactory
+interface DataGroupFactory
+abstract BaseDataGroupFactory implements DataGroupFactory
+class DefaultDataGroupFactory extends BaseDataGroupFactory
+class DerivedDataGroupFactory extends BaseDataGroupFactory
+class CrossDataGroupFactory extends BaseDataGroupFactory
+
+' DataRepository
+interface DataRepository
+abstract BaseDataRepository implements DataRepository
+class CSVDataRepository extends BaseDataRepository
+class WAVDataRepository extends BaseDataRepository
+
+' Executer
+interface BaseExecutor
+class FuncExecutor implements BaseExecutor
+class CrossExecutor implements BaseExecutor
+
+' デザイン間
+DataUnit --o DataGroup
+DataGroup --o Analyzer
+DataUnitFactory --o DataGroupFactory
+DataGroupFactory --o Analyzer
+DataRepository --o DataUnitFactory
+@enduml
