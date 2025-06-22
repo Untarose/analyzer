@@ -16,6 +16,24 @@
 -
 ```
 ---
+## [0.0.5-dev] - 2025-06-22
+### 🚀 追加
+- DataGroupの集合体であるAnalyzerの実装とテスト
+    - Interface: BaseAnalyzer
+    - 各Groupにつけられた名前でアクセス可能な辞書型構造
+    - exist_group_name
+        - 結びつけられた名前のグループが存在しているかどうか
+    - getter
+        - root_dhirectory
+    - delete_group
+        - 指定したグループを削除
+    - get_group
+        - 指定した名前のグループを返す
+    - _add_group
+        - 新たなグループを追加する（private）
+    - save_group
+        -　指定したグループをファイルに保存する
+---
 ## [0.0.4-dev] - 2025-06-22
 ### 🚀 追加
 - DataUnitの集合体であるDataGroupの実装とテスト
