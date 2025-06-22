@@ -16,12 +16,25 @@
 -
 ```
 ---
-## [0.0.3-dev] - 2025-6-22
+## [0.0.4-dev] - 2025-06-22
+### 🚀 追加
+- DataUnitの集合体であるDataGroupの実装とテスト
+    - Interface: BaseDataGroup
+    - 各Unitに名前でアクセス可能な辞書型構造
+    - 結びつけられた名前の存在可否メソッド
+        - exist_unit_name
+    - getter
+        - get_unit, unit_names, units, name, path
+    - DataGroupのユニット取得・例外処理に関するユニットテストを追加
+    - setterは、Analyzer（未実装）での明示的なDataGroupの削除後、ユーザが渡す関数内で明示的に作成しようとしなければならない仕様（未実装）であるため、作成しない。
+---
+## [0.0.3-dev] - 2025-06-22
 ### 🚀 追加
 - 最小単位のDataUnitの実装とテスト
+    - Interface: BaseDataUnit
 
 ---
-## [0.0.2-dev] - 2025-6-22
+## [0.0.2-dev] - 2025-06-22
 ### 🚀 追加
 - requirements.txtの更新
 - test用環境の作成
