@@ -16,6 +16,13 @@
 -
 ```
 ---
+## [0.0.6-dev] - 2025-
+### 🚀 追加
+- DataUnit, DataGroup, Analyzerのインターフェース名を変更
+    - BaseXxx->XxxInterface
+    - ファイル名
+        - base_xxx.py->xxx_interface.py
+---
 ## [0.0.5-dev] - 2025-06-22
 ### 🚀 追加
 - DataGroupの集合体であるAnalyzerの実装とテスト

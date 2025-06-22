@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
 from cores.datagroup import DataGroup
-class BaseAnalyzer(ABC):
+class AnalyzerInterface(ABC):
     @property
     @abstractmethod
     def root_directory(self) -> Path:

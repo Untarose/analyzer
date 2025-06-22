@@ -1,8 +1,8 @@
 from pathlib import Path
-from interfaces.base_datagroup  import BaseDataGroup
+from interfaces.datagroup_interface  import DataGroupInterface
 from cores.dataunit import DataUnit
 
-class DataGroup(BaseDataGroup):
+class DataGroup(DataGroupInterface):
 
     def __init__(self, name ,units: dict[str, DataUnit], path: Path) -> None:
         self._name = name

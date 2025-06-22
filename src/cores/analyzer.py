@@ -1,9 +1,9 @@
 from abc import abstractmethod
 from pathlib import Path
-from interfaces.base_analyzer import BaseAnalyzer
+from interfaces.analyzer_interface import AnalyzerInterface
 from cores.datagroup import DataGroup
 
-class Analyzer(BaseAnalyzer):
+class Analyzer(AnalyzerInterface):
     def __init__(self, groups: dict[str, DataGroup], root_directory: Path) -> None:
         self._groups = groups
         self._root_directory = root_directory

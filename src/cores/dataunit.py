@@ -1,9 +1,9 @@
 
 from typing import Any, Self
 from pandas.core.api import DataFrame as DataFrame
-from interfaces.base_dataunit import BaseDataUnit
+from interfaces.dataunit_interface import DataUnitInterface
 
-class DataUnit(BaseDataUnit):
+class DataUnit(DataUnitInterface):
     
     def __init__(self, name: str, df: DataFrame, metadata: dict[str, Any]) -> None:
         """

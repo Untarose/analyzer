@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
-from interfaces.base_dataunit import BaseDataUnit
+from interfaces.dataunit_interface import DataUnitInterface
 
-class BaseDataGroup(ABC):
+class DataGroupInterface(ABC):
     @property
     @abstractmethod
     def name(self) -> str:
@@ -11,7 +11,7 @@ class BaseDataGroup(ABC):
         """
     @property
     @abstractmethod
-    def units(self) -> dict[str, BaseDataUnit]:
+    def units(self) -> dict[str, DataUnitInterface]:
         """
         辞書型のDataUnitの一覧を返す
         """
@@ -24,7 +24,7 @@ class BaseDataGroup(ABC):
         """
         pass
     @abstractmethod
-    def get_unit(self, unit_name: str) -> BaseDataUnit:
+    def get_unit(self, unit_name: str) -> DataUnitInterface:
         """
         指定したnameをもつDataUnitを返す
         """

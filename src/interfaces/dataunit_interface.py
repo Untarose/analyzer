@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Any
 import pandas as pd
 
-class BaseDataUnit(ABC):
+class DataUnitInterface(ABC):
     @property
     @abstractmethod
     def name(self) -> str:
@@ -21,15 +21,15 @@ class BaseDataUnit(ABC):
         """メタ情報を返す"""
         pass
     @abstractmethod
-    def with_updated_name(self, new_name: str) -> "BaseDataUnit":
+    def with_updated_name(self, new_name: str) -> "DataUnitInterface":
         """名前を更新して新しいユニットを返す。immutable"""
         pass
     @abstractmethod
-    def with_updated_df(self, new_df: pd.DataFrame) -> "BaseDataUnit":
+    def with_updated_df(self, new_df: pd.DataFrame) -> "DataUnitInterface":
         """新しいDataFrameで新しいユニットを返す。immutable"""
         pass
     @abstractmethod
-    def with_update_metadata(self, key:str, value: Any) -> "BaseDataUnit":
+    def with_update_metadata(self, key:str, value: Any) -> "DataUnitInterface":
         """メタ情報を更新して新しいユニットを返す。immutable"""
         pass
 
