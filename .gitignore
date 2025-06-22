@@ -1,11 +1,16 @@
 # 仮想環境
 venv/
+venv-test/
 .env
+pytest.ini
 
 # Pythonキャッシュ系
 __pycache__/
 *.pyc
 *.pyo
+
+#pytestキャッシュ系
+.pytest_cache
 
 # Jupyter
 .ipynb_checkpoints/
@@ -18,3 +23,5 @@ data/
 
 # VSCode系（必要なら）
 .vscode/
+settings.json
+analyzer.code-workspace
