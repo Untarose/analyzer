@@ -16,8 +16,26 @@
 -
 ```
 ---
-## [0.0.6-dev] - 2025-
+
+---
+## [0.0.7-dev] - 2025-06-23
 ### 🚀 追加
+DataReposityの実装とテスト
+- interface: DataRepository 追加
+    - file: interfaces/data_repository.py
+    - save
+        - DataFrameを保存する
+    - load
+        - DataFrameをファイルから読み込む
+- Abstract: BaseDataRepository 追加
+    - file: cores/base_data_repository.py
+    - _ensure_path_exists
+        - ファイルの保存先にディレクトリがなければ追加する
+- concrete: CSVDataRepository
+    - file: cores/CSVDataRepository.py
+    - test: test_csv_repositoty.py
+## [0.0.6-dev] - 2025-06-23
+### 🐛 修正
 - DataUnit, DataGroup, Analyzerのインターフェース名を変更
     - BaseXxx->XxxInterface
     - ファイル名
