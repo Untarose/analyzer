@@ -1,28 +1,29 @@
+from dataclasses import replace, asdict
 from pathlib import Path
 from interfaces.datagroup_interface  import DataGroupInterface
 from cores.dataunit import DataUnit
-
+from cores.metas.datagroup_meta import DataGroupMeta
 class DataGroup(DataGroupInterface):
 
-    def __init__(self, name ,units: dict[str, DataUnit], path: Path) -> None:
-        self._name = name
+    def __init__(self,units: dict[str, DataUnit], meta: DataGroupMeta) -> None:
         self._units = units
-        self._path = path.resolve()
+        self._metadata = meta
+        
 
     @property
     def name(self) -> str:
-        return self._name
+        return self._metadata.name
 
+    @property
+    def path(self) -> Path:
+        return self._metadata.path
+    
     @property
     def units(self) -> dict[str, DataUnit]:
         """
         辞書型のDataUnitの一覧を返す
         """
         return self._units
-    
-    @property
-    def path(self) -> Path:
-        return self._path
 
     def get_unit(self, unit_name: str) -> DataUnit:
         """
@@ -44,3 +45,11 @@ class DataGroup(DataGroupInterface):
         unitsの名前列を返す
         """
         return list(self._units.keys())
+
+    def with_update_name(self, new_name: str) -> DataGroupInterface:
+        """
+        metaの中のnameを変更する
+        """
+        new_metadata = replace(self._metadata, name=new_name)
+        return self.__class__(self._units, new_metadata)
+    

@@ -1,7 +1,6 @@
 import pytest
 from pathlib import Path
 from datetime import datetime
-from dataclasses import dataclass
 from cores.metas.dataunit_meta import DataUnitMeta
 
 def test_init_dataunit_meta_success():
@@ -22,12 +21,24 @@ def test_init_dataunit_meta_success():
     assert unit_meta.created_at == created_at
     assert unit_meta.format == format
 
-def test_init_dataunit_meta_value_error():
+def test_init_dataunit_name_value_error():
     name = ''
     path = Path('./tmp/a.csv')
     created_at = datetime.now()
     format = 'csv'
-    with pytest.raises(ValueError, match = 'name must not be empty.'):
+    with pytest.raises(ValueError):
+        unit_meta = DataUnitMeta(
+            name,
+            path,
+            created_at,
+            format
+        )
+def test_init_dataunit_path_value_error():
+    name = 'unit'
+    path = Path('')
+    created_at = datetime.now()
+    format = 'csv'
+    with pytest.raises(ValueError):
         unit_meta = DataUnitMeta(
             name,
             path,

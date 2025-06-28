@@ -41,3 +41,9 @@ class DataGroupInterface(ABC):
         unitsの名前列を返す
         """
         pass
+    @abstractmethod
+    def with_update_name(self, new_name: str) -> "DataGroupInterface":
+        """
+        datagroupのmetaデータのnameを変更する
+        """
+        pass

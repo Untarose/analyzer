@@ -24,12 +24,4 @@ class DataUnitInterface(ABC):
     def with_updated_name(self, new_name: str) -> "DataUnitInterface":
         """名前を更新して新しいユニットを返す。immutable"""
         pass
-    @abstractmethod
-    def with_updated_df(self, new_df: pd.DataFrame) -> "DataUnitInterface":
-        """新しいDataFrameで新しいユニットを返す。immutable"""
-        pass
-    @abstractmethod
-    def with_update_metadata(self, key:str, value: Any) -> "DataUnitInterface":
-        """メタ情報を更新して新しいユニットを返す。immutable"""
-        pass
 

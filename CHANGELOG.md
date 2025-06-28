@@ -15,22 +15,58 @@
 ### 🐛 修正
 -
 ```
----
 
 ---
-## [version] - 2025-
+## [0.0.8-dev] - 2025-06-28
 ### 🚀 追加
-- MetaInterfaceの作成
+- DataGroupMetaの実装
+    - implements: MetaInterface
+    - file: cores/datagroup_meta.py
+    - 説明　DataGroup用のMetaデータクラス
+    - フィールド
+        - MetaInterfaceと同じ
+    - テスト
+        - file: tests/cores/metas/test_datagroup_meta.py
+---
+### 🐛 修正
+- DataGroupInterfaceの修正
+    - file: interface/datafroup_interface.py
+    - 説明 
+        - with_update_nameの導入
+- DataGroupの修正
+    - file: cores/datagroup.py
+    - 説明
+        - _name, _pathの削除
+            - DataGroupMetaへ　
+        - DataGroupMetaの導入
+        - with_update_nameの導入
+            - meta.nameフィールドの変更ができるように
+    - テスト
+        - file: tests/cores/test_datagroup.py
+- DataUnitの修正
+    - with_update_dfの削除
+        - ユーザ側にとっては不必要な操作のため
+    - with_update_metaの削除
+        - ユーザ側にとっては不必要な操作のため
+- DataUnitMetaの修正
+    - created_atを引数として与えないとき、現在時刻で設定するように
+    - Pathを空文字で渡した場合ValueErrorを出すように
+- 上記に合うように
+    - test_datagroupを変更
+---
+## [0.0.8-dev] - 2025-06-28
+### 🚀 追加
+- MetaInterfaceの実装
     - file: interfaces/meta_interface.py
     - 説明　Metaデータ用インターフェース
     - フィールド
         - name 名前 str
         - path データ保存パス Pathオブジェクト
         - created_at 日付 datetimeオブジェクト, Optional
-- DataUnitMetaの作成
+- DataUnitMetaの実装
     - implements: MetaInterface
     - file: cores/metas/dataunit_meta.py 
-    - 説明　データユニットの各種Metaデータ
+    - 説明　DataUnit用のMetaデータクラス
     - フィールド
         - format データフォーマット　str, Optional
     - テスト
