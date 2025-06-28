@@ -18,6 +18,37 @@
 ---
 
 ---
+## [version] - 2025-
+### 🚀 追加
+- MetaInterfaceの作成
+    - file: interfaces/meta_interface.py
+    - 説明　Metaデータ用インターフェース
+    - フィールド
+        - name 名前 str
+        - path データ保存パス Pathオブジェクト
+        - created_at 日付 datetimeオブジェクト, Optional
+- DataUnitMetaの作成
+    - implements: MetaInterface
+    - file: cores/metas/dataunit_meta.py 
+    - 説明　データユニットの各種Metaデータ
+    - フィールド
+        - format データフォーマット　str, Optional
+    - テスト
+        - file: tests/cores/metas/test_dataunit_meta.py
+
+### 🐛 修正
+- DataUnitの修正
+    - file: cores/dataunit.py
+    - DataUnitの導入
+        - フィールド　_nameの削除
+        - フィールド　_metadataを辞書型からDataUnitMeta型に変更
+        - プロパティ　nameの削除
+        - プロパティ　metadataの変更
+        - メソッド　with_update_nameの変更
+        - メソッド　with_update_metadataの変更
+    - テスト
+        file: tests/cores/test_dataunit.py
+---
 ## [0.0.7-dev] - 2025-06-23
 ### 🚀 追加
 DataReposityの実装とテスト
@@ -34,6 +65,7 @@ DataReposityの実装とテスト
 - concrete: CSVDataRepository
     - file: cores/CSVDataRepository.py
     - test: test_csv_repositoty.py
+---
 ## [0.0.6-dev] - 2025-06-23
 ### 🐛 修正
 - DataUnit, DataGroup, Analyzerのインターフェース名を変更
