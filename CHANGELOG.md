@@ -15,9 +15,22 @@
 ### 🐛 修正
 -
 ```
+---
+## [0.0.10] - 2025-6-28
+### 🚀 追加
+- DataUnitFactoryInterfaceの実装
+    - file: interface/dataunit_factory_interface.py
+    - method
+        - create
+            - 生データを読み込んでDataFrameに変換し、それをDataUnitに
+        - _create_meta
+            - create内で使う。metaクラスの作成メソッド
+- BaseDataUnitFactoryの実装
+    - _create_metaはすべてのconcreteクラスで同じ処理なのでここで定義
+    - test: test_base_dataunit_factory
 
 ---
-## [0.0.8-dev] - 2025-06-28
+## [0.0.9-dev] - 2025-06-28
 ### 🚀 追加
 - DataGroupMetaの実装
     - implements: MetaInterface
