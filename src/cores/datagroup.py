@@ -1,12 +1,13 @@
 from dataclasses import replace, asdict
 from pathlib import Path
+from collections.abc import Mapping
 from interfaces.datagroup_interface import DataGroupInterface
 from interfaces.dataunit_interface import DataUnitInterface
 from cores.metas.datagroup_meta import DataGroupMeta
 class DataGroup(DataGroupInterface):
 
-    def __init__(self,units: dict[str, DataUnitInterface], meta: DataGroupMeta) -> None:
-        self._units = units
+    def __init__(self,units: Mapping[str, DataUnitInterface], meta: DataGroupMeta) -> None:
+        self._units = dict(units)
         self._metadata = meta
         
 
@@ -39,6 +40,13 @@ class DataGroup(DataGroupInterface):
         指定したnameをもつunitを持っているか
         """
         return unit_name in self.unit_names()
+    
+    def add_unit(self, new_unit: DataUnitInterface) -> None:
+        """
+        # TODO テストへの追記
+        DataGroupにUnitを追加する
+        """
+        self._units[new_unit.name] = new_unit
 
     def unit_names(self) -> list[str]:
         """

@@ -41,6 +41,11 @@ class DataGroupInterface(ABC):
         unitsの名前列を返す
         """
         pass
+    def add_unit(self, new_unit: DataUnitInterface) -> None:
+        """
+        # TODO テストへの追記
+        DataGroupにUnitを追加する
+        """
     @abstractmethod
     def with_update_name(self, new_name: str) -> "DataGroupInterface":
         """

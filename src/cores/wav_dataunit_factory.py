@@ -10,7 +10,19 @@ class WavDataUnitFactory(BaseDataUnitFactory):
     def create(self, raw_data: tuple[int, np.ndarray], name: str, path: Path) -> list[DataUnitInterface]:
         rate, data = raw_data
         df_rate = DataFrame({'sample_rate': [rate]})
-        df_waveform = DataFrame({'sample_index': np.arange(len(data)), 'amplitude': data})
+        if data.ndim == 1:
+            df_waveform = DataFrame({
+                'sample_index': np.arange(len(data)),
+                'amplitude': data
+            })
+        elif data.ndim == 2 and data.shape[1] == 2:
+            df_waveform = DataFrame({
+                'sample_index': np.arange(len(data)),
+                'left': data[:, 0],
+                'right': data[:, 1]
+            })
+        else:
+            raise ValueError(f"Unsupported WAV shape: {data.shape}")
 
         rate_name = f'{name}_rate'
         waveform_name = f'{name}_waveform'

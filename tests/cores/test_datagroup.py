@@ -144,4 +144,35 @@ def test_with_updated_meta():
     group = DataGroup(units, metadata_group_1)
     # new meta field
         
-    
+def test_add_unit():
+    # unit 1
+    df_unit_1 = pd.DataFrame({'a': [1, 2]})
+    metadata_unit_1 = DataUnitMeta(
+        name = 'unit_1',
+        path = Path('./group_1/unit_1.csv')
+    )
+    unit_1 = DataUnit(df_unit_1, metadata_unit_1)
+
+    # unit 2
+    df_unit_2 = pd.DataFrame({'b': [3, 4]})
+    metadata_unit_2 = DataUnitMeta(
+        name = 'unit_2',
+        path = Path('./group_1/unit_2.csv')
+    )
+    unit_2 = DataUnit(df_unit_2, metadata_unit_2)
+
+    # units
+    units = {unit_1.name: unit_1}
+
+    # make DataGroup
+    group_name = 'group_1'
+    group_path = Path('./group_1')
+    metadata_group_1 = DataGroupMeta(
+        name = group_name,
+        path = group_path,
+    )
+    group = DataGroup(units, metadata_group_1)
+
+    group.add_unit(unit_2)
+
+    assert group.units[unit_2.name] == unit_2

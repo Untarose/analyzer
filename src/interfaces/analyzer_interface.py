@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
-from cores.datagroup import DataGroup
+from interfaces.datagroup_interface import DataGroupInterface
 class AnalyzerInterface(ABC):
     @property
     @abstractmethod
@@ -25,14 +25,14 @@ class AnalyzerInterface(ABC):
         pass
 
     @abstractmethod
-    def get_group(self, group_name: str) -> DataGroup:
+    def get_group(self, group_name: str) -> DataGroupInterface:
         """
         指定した名前のグループを返す
         """
         pass
 
     @abstractmethod
-    def _add_group(self, new_group: DataGroup) -> None:
+    def _add_group(self, new_group: DataGroupInterface) -> None:
         """
         新たなグループを追加する
         """
