@@ -16,6 +16,16 @@
 -
 ```
 ---
+## [0.0.12-dev] - 2025-
+### 🚀 追加
+- WavDataRepositoryの実装
+    - scipyのwavfile.readを用いて読み込む
+---
+### 🐛 修正
+- DataRepositoryInterfaceとBaseDataRepositoryのloadメソッドはpd.DataFrameではなく、objectを返すように
+    - Wavファイルを読み込むとnp.ndarrayやint形式のデータが得られるため
+    - FactoryでDataFrameを作成するため、ここでは責務分離を行う
+---
 ## [0.0.11-dev] - 2025-06-29
 ### 🚀 追加
 - DefaultDataUnitFactory

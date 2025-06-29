@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import List
 from pathlib import Path
 import pandas as pd
 
@@ -10,7 +11,7 @@ class DataRepositoryInterface(ABC):
         """
         pass
     @abstractmethod
-    def load(self, path: Path) -> pd.DataFrame:
+    def load(self, path: Path) -> object:
         """
         データの読み込み処理
         """

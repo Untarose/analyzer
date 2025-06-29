@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Generic, TypeVar
 from pandas.core.api import DataFrame as DataFrame
 
-from interfaces.data_repository import DataRepositoryInterface
+from interfaces.data_repository_interface import DataRepositoryInterface
 from interfaces.dataunit_interface import DataUnitInterface
 from interfaces.meta_interface import MetaInterface
 
