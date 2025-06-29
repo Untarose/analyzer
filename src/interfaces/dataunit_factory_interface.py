@@ -9,7 +9,7 @@ from interfaces.meta_interface import MetaInterface
 
 class DataUnitFactoryInterface(ABC):
     @abstractmethod
-    def create(self, raw_data: object, name: str, path: Path) -> DataUnitInterface:
+    def create(self, raw_data: object, name: str, path: Path) -> list[DataUnitInterface]:
         """
         基本のDataUnit生成メソッド
         """

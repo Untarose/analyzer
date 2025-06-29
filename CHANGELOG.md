@@ -16,7 +16,25 @@
 -
 ```
 ---
-## [0.0.10] - 2025-6-28
+## [0.0.11-dev] - 2025-06-29
+### 🚀 追加
+- DefaultDataUnitFactory
+    - create
+        - DataFrame形式のデータを使ってDataUnitの配列を返す。
+            - abstract: BaseDataUnitFactory
+            - Defaultの場合は配列の長さが１だが、他の読み込みパターンによっては複数のDataUnitができるため、統一して配列を返すようにしている。
+- WavDataUnitFactory
+    - create
+        - Tuple[int, np.ndarray]形式の音声データを使って、長さ２のデータフレームに。
+            - int : サンプリングレート情報を格納するDataFrameに
+            - np.ndarray : 波形情報をDataFrameに
+
+---
+### 🐛 修正
+- DataUnitFactoryInterfaceとBaseDataUnitFactoryのcreateの返り値の型をList[DataFrame]に
+- create の引数rawdataの型をobjectに変更
+---
+## [0.0.10-dev] - 2025-06-28
 ### 🚀 追加
 - DataUnitFactoryInterfaceの実装
     - file: interface/dataunit_factory_interface.py

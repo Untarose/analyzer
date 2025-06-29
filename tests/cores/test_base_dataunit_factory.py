@@ -5,9 +5,9 @@ from cores.dataunit import DataUnit
 from interfaces.dataunit_interface import DataUnitInterface
 
 class DummyDataUnitFactory(BaseDataUnitFactory):
-    def create(self, raw_data: object, name: str, path: Path) -> DataUnitInterface:
+    def create(self, raw_data: object, name: str, path: Path) -> list[DataUnitInterface]:
         df = DataFrame({'a': [1, 2]})
-        return DataUnit(df=df, metadata=self._create_meta(name, path))
+        return [DataUnit(df=df, metadata=self._create_meta(name, path))]
 
 
 
@@ -15,7 +15,8 @@ def test_create_meta():
     name = 'unit_1'
     path = Path('./group/unit_1')
     dummyDataUnitFactory = DummyDataUnitFactory()
-    dummyDataUnitFactory._create_meta(
+    dataunit = dummyDataUnitFactory._create_meta(
         name=name,
         path=path
     )
+    assert dataunit.name == name

@@ -1,17 +1,18 @@
 @startuml src
 ' 主要部分
-interface BaseAnalyzer
-interface BaseDataUnit
-interface BaseDataGroup
+interface AnalyzerInterface
+interface DataUnitInterface
+interface DataGroupInterface
 
-class BaseAnalyzer implements Analyzer
-class BaseDataUnit implements DataUnit
-class BaseDataGroup implements DataGroup
+class AnalyzerInterface implements Analyzer
+class DataUnitInterface implements DataUnit
+class DataGroupInterface implements DataGroup
 
 ' DataUnitFactory
 interface DataUnitFactory
 abstract BaseDataUnitFactory implements DataUnitFactory
 class DefaultDataUnitFactory extends BaseDataUnitFactory
+class WavDataUnitFactory extends BaseDataUnitFactory
 
 ' DataGroupFactory
 interface DataGroupFactory

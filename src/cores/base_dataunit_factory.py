@@ -10,9 +10,9 @@ from cores.metas.dataunit_meta import DataUnitMeta
 
 class BaseDataUnitFactory(DataUnitFactoryInterface):
     @abstractmethod
-    def create(self, raw_data: object, name: str, path: Path) -> DataUnitInterface:
+    def create(self, raw_data: object, name: str, path: Path) -> list[DataUnitInterface]:
         """
-        基本のDataUnit生成メソッド
+        すでに構造化したデータを読み込む、基本のDataUnit生成メソッド
         """
         raise NotImplementedError(f"{self.__class__.__name__}.create() is not implemented.")
         
