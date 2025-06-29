@@ -16,7 +16,28 @@
 -
 ```
 ---
-## [0.0.12-dev] - 2025-
+## [0.0.13-dev] - 2025-06-29
+### 🚀 追加
+- DataGroupFactoryInterfaceの実装
+    - DataGroupのインスタンスを作成するクラスのインターフェース
+        - create
+            - units: List[DataUnitInterface]
+            - name : str
+            - path : Path
+            - -> DataGroupInterface
+- DefaultDataGroupFactoryの実装
+    - 基本的なDataGroupのインスタンスを作成する具象クラス
+        - create
+        - _create_meta
+            - name : str
+            - path : Path
+
+---
+### 🐛 修正
+- DataGroupの修正
+    - 内部でDataUnitを用いていたものをDataUnitInterfaceに変更
+---
+## [0.0.12-dev] - 2025-06-29
 ### 🚀 追加
 - WavDataRepositoryの実装
     - scipyのwavfile.readを用いて読み込む

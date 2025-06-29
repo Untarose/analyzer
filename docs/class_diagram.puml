@@ -9,20 +9,17 @@ class DataUnitInterface implements DataUnit
 class DataGroupInterface implements DataGroup
 
 ' DataUnitFactory
-interface DataUnitFactory
+interface DataUnitFactoryInterface
 abstract BaseDataUnitFactory implements DataUnitFactory
 class DefaultDataUnitFactory extends BaseDataUnitFactory
 class WavDataUnitFactory extends BaseDataUnitFactory
 
 ' DataGroupFactory
-interface DataGroupFactory
-abstract BaseDataGroupFactory implements DataGroupFactory
-class DefaultDataGroupFactory extends BaseDataGroupFactory
-class DerivedDataGroupFactory extends BaseDataGroupFactory
-class CrossDataGroupFactory extends BaseDataGroupFactory
+interface DataGroupFactoryInterface
+class DefaultDataGroupFactory implements DataGroupFactory
 
 ' DataRepository
-interface DataRepository
+interface DataRepositoryInterface
 abstract BaseDataRepository implements DataRepository
 class CSVDataRepository extends BaseDataRepository
 class WAVDataRepository extends BaseDataRepository

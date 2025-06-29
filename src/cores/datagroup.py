@@ -1,11 +1,11 @@
 from dataclasses import replace, asdict
 from pathlib import Path
-from interfaces.datagroup_interface  import DataGroupInterface
-from cores.dataunit import DataUnit
+from interfaces.datagroup_interface import DataGroupInterface
+from interfaces.dataunit_interface import DataUnitInterface
 from cores.metas.datagroup_meta import DataGroupMeta
 class DataGroup(DataGroupInterface):
 
-    def __init__(self,units: dict[str, DataUnit], meta: DataGroupMeta) -> None:
+    def __init__(self,units: dict[str, DataUnitInterface], meta: DataGroupMeta) -> None:
         self._units = units
         self._metadata = meta
         
@@ -19,13 +19,13 @@ class DataGroup(DataGroupInterface):
         return self._metadata.path
     
     @property
-    def units(self) -> dict[str, DataUnit]:
+    def units(self) -> dict[str, DataUnitInterface]:
         """
         辞書型のDataUnitの一覧を返す
         """
         return self._units
 
-    def get_unit(self, unit_name: str) -> DataUnit:
+    def get_unit(self, unit_name: str) -> DataUnitInterface:
         """
         指定したnameをもつDataUnitを返す
         """
