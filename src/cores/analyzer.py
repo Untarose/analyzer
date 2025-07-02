@@ -93,8 +93,12 @@ class Analyzer(AnalyzerInterface):
     def save_group(self, group_name: str) -> None:
         if not self.exist_group_name(group_name):
             raise ValueError(f"Group {group_name} does not exist")
-        # TODO: 後日実装
-        raise NotImplementedError("save_group() is not yet implemented.")
+        for unit in self.get_group(group_name).units.values():
+            self._repositories['csv'].save(
+                unit.path,
+                unit.df
+            )
+
     
     def _check_directory_requirements(self):
         vault_path = self._root_directory / 'vault'
@@ -135,7 +139,8 @@ class Analyzer(AnalyzerInterface):
             all_units = []
             for data_path in data_files:
                 name = data_path.stem
-                all_units += self._load_units_single(name, data_path, meta_path)
+                meta_data_path = meta_path / name
+                all_units += self._load_units_single(name, data_path, meta_data_path)
             return all_units
 
     def _load_units_single(self, name: str, data_path: Path, meta_path:Path) -> list[DataUnitInterface]:

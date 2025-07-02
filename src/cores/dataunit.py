@@ -1,5 +1,6 @@
 
 from typing import Any, Self
+from pathlib import Path
 from dataclasses import replace, asdict
 from pandas.core.api import DataFrame as DataFrame
 from interfaces.dataunit_interface import DataUnitInterface
@@ -22,7 +23,12 @@ class DataUnit(DataUnitInterface):
         getter ユニットの名前を返す
         """
         return self._metadata.name
-
+    @property
+    def path(self) -> Path:
+        """
+        getter ユニットのpathを返す
+        """
+        return self._metadata.path
     @property
     def df(self) -> DataFrame:
         """

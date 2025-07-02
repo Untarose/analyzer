@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from pathlib import Path
 from typing import Any
 import pandas as pd
 
@@ -7,6 +8,12 @@ class DataUnitInterface(ABC):
     @abstractmethod
     def name(self) -> str:
         """ユニット名を返す"""
+        pass
+
+    @property
+    @abstractmethod
+    def path(self) -> Path:
+        """ユニットのパスを返す"""
         pass
 
     @property

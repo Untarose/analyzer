@@ -52,11 +52,6 @@ def test_delete_group(sample_analyzer):
     sample_analyzer.delete_group("group1")
     assert not sample_analyzer.exist_group_name("group1")
 
-def test_save_group_not_implemented(sample_analyzer):
-    with pytest.raises(NotImplementedError):
-        sample_analyzer.save_group("group1")
-
-
 def test_load_groups_from_vault(tmp_path: Path):
     # 正しい Vault 構造（vault/group1/__DATA__/data.csv）
     group_dir = tmp_path / "vault" / "group1"
@@ -78,4 +73,19 @@ def test_load_groups_from_vault(tmp_path: Path):
     assert analyzer.exist_group_name("group1")
     group = analyzer.get_group("group1")
     assert "group1_waveform" in group.unit_names() or len(group.unit_names()) > 0  # 仮名対応
+
+
+def test_save(sample_analyzer: Analyzer):
+    sample_analyzer.save_group('group1')
+
+    save_unit_path = sample_analyzer.get_group('group1').get_unit('unit1').path
+    df = sample_analyzer.get_group('group1').get_unit('unit1').df
+    save_data_dir = save_unit_path.parent
+
+    # assertion
+    assert save_unit_path.is_file() and save_unit_path.exists()
+    assert save_data_dir.is_dir() and save_data_dir.exists()
+    loaded_df = pd.read_csv(save_unit_path)
+    assert df.equals(loaded_df)
+
 

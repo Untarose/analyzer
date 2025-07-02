@@ -10,8 +10,9 @@ class CSVDataRepository(BaseDataRepository):
         """
         dfを保存する
         """
-        self._ensure_path_exists(path)
-        df.to_csv(path, index=False)
+        csv_path = path.with_suffix('.csv')
+        self._ensure_path_exists(csv_path)
+        df.to_csv(csv_path, index=False)
 
     def load(self, path: Path) -> pd.DataFrame:
         """
