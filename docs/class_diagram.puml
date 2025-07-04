@@ -10,29 +10,29 @@ class DataGroupInterface implements DataGroup
 
 ' DataUnitFactory
 interface DataUnitFactoryInterface
-abstract BaseDataUnitFactory implements DataUnitFactory
+abstract BaseDataUnitFactory implements DataUnitFactoryInterface
 class DefaultDataUnitFactory extends BaseDataUnitFactory
 class WavDataUnitFactory extends BaseDataUnitFactory
 
 ' DataGroupFactory
 interface DataGroupFactoryInterface
-class DefaultDataGroupFactory implements DataGroupFactory
+class DefaultDataGroupFactory implements DataGroupFactoryInterface
 
 ' DataRepository
 interface DataRepositoryInterface
-abstract BaseDataRepository implements DataRepository
+abstract BaseDataRepository implements DataRepositoryInterface
 class CSVDataRepository extends BaseDataRepository
 class WAVDataRepository extends BaseDataRepository
 
 ' Executer
-interface BaseExecutor
-class FuncExecutor implements BaseExecutor
-class CrossExecutor implements BaseExecutor
+interface ExecutorInterface
+class FuncExecutor implements ExecutorInterface
+class CrossExecutor implements ExecutorInterface
 
 ' デザイン間
-DataUnit --o DataGroup
-DataGroup --o Analyzer
-DataUnitFactory --o DataGroupFactory
-DataGroupFactory --o Analyzer
-DataRepository --o DataUnitFactory
+DataUnitInterface --o DataGroup
+DataGroupInterface --o Analyzer
+DataUnitFactoryInterface --o DataGroupFactory
+DataGroupFactoryInterface --o Analyzer
+ExecutorInterface --o Analyzer
 @enduml

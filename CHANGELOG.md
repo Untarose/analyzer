@@ -16,6 +16,17 @@
 -
 ```
 ---
+## [0.0.16-dev] - 2025-07-04
+### 🚀 追加
+- ExecContext
+    - file:cores.exec_context.py
+    - ユーザがAnalyzerに関数と指定したグループを渡して新たなDataGroup群を作る際に必要となる。
+        - その際にAnalyzerに渡す引数の一部になる
+    - また、渡す関数の引数に、操作したいGroup群units_selectionに格納されているGroup名とkwargsが明示されていないとエラーになる。ここでのkwargsはExecContextの引数のことであり、**kwargsのことではない。
+        - **kwargsは関数に指定するとエラーが出るようにしてある。
+        - あくまで明示的な関数のみを対象とした。
+            - データ操作の可読性を高めるため。
+---
 ## [0.0.15-dev] - 2025-07-02
 ### 🚀 追加
 - analyzer.save_groupの追加
