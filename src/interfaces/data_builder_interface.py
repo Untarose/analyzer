@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from pathlib import Path
 from pandas import DataFrame
 
 from interfaces.datagroup_interface import DataGroupInterface
@@ -17,7 +18,7 @@ class DataBuilderInterface(ABC):
             dict[str, dict[str, DataFrame]]: 関数で使われる引数を返す
         """
     @abstractmethod
-    def dict_to_group(self, groups_dict :dict[str, dict[str, DataFrame]]) -> list[DataGroupInterface]:
+    def dict_to_group(self, groups_dict :dict[str, dict[str, DataFrame]], parent_path: Path) -> list[DataGroupInterface]:
         """関数の返り値をGroupに変換する
 
         Args:

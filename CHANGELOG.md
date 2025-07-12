@@ -16,6 +16,26 @@
 -
 ```
 ---
+## [0.0.20-dev] - 2025-07-12
+### 🚀 追加
+- ExecutorInterface
+    - exec
+        - func: Callableと，ExecContext，使用するGroupを渡すことで関数を実行する．また，その返り値は期待された形であれば，整形してGroupのリストを返す．
+        - 期待されない出力の場合空のリストを返す
+    - _create_common_group_path
+        - 使用するgroupsの共通部分のpathを返す
+    - _is_expect_result
+        - 関数の返り値が期待された形のものかどうかを判断する
+- Executor
+    - concrete
+    - implemented ExecutorInterface
+    - test
+        - tests/cores/test_executor.py
+### 🐛 修正
+- DataBuilderInterface
+    - dict_to_group
+        - 引数にparent_pathを追加
+---
 ## [0.0.19-dev] - 2025-07-12
 ### 🚀 追加
 - DataBuilderInterface
