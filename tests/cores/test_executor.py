@@ -112,7 +112,7 @@ def test_exec(sample_analyzer):
     assert group_map['newgroup4'].get_unit('d').df.equals(new_df2_2)
     
 def test_is_expext_result():
-    # Executorを構築（BuilderだけでOK）
+    # Executorを構築
     builder = DataBuilder(DefaultDataUnitFactory(), DefaultDataGroupFactory())
     executor = Executor(builder)
 

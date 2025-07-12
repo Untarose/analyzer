@@ -2,6 +2,7 @@
 
 すべての変更履歴を記録するファイル。  
 このプロジェクトは [セマンティック バージョニング](https://semver.org/lang/ja/) に従ってバージョン管理されます。
+（ただし，バージョン0.1.0以降に限る．）
 
 ---
 ## template
@@ -15,6 +16,15 @@
 ### 🐛 修正
 -
 ```
+---
+## [0.1.0-dev] - 2025-07-22
+### 📎 MVP(dev) 最低限の機能の追加が完了.
+### 🚀 追加
+- Analyzer.run
+    - run
+        - Analyzerから関数と操作対象のDataGroup, DataUnitを指定して，新しいDataGroupを作成できるように
+    - test
+        - tests/cores/test_analyzer.py
 ---
 ## [0.0.20-dev] - 2025-07-12
 ### 🚀 追加

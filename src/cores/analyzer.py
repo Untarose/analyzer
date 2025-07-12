@@ -6,11 +6,15 @@ from cores.wav_data_repository import WavDataRepository
 from cores.default_dataunit_factory import DefaultDataUnitFactory
 from cores.wav_dataunit_factory import WavDataUnitFactory
 from cores.default_datagroup_factory import DefaultDataGroupFactory
+from cores.executor import Executor
+from cores.data_builder import DataBuilder
+from cores.exec_context import ExecContext
 from interfaces.dataunit_interface import DataUnitInterface
 from interfaces.datagroup_interface import DataGroupInterface
 from interfaces.data_repository_interface import DataRepositoryInterface
 from interfaces.datagroup_factory_interface import DataGroupFactoryInterface
 from interfaces.dataunit_factory_interface import DataUnitFactoryInterface
+from interfaces.ExecutorInterface import ExecutorInterface
 class Analyzer(AnalyzerInterface):
     _groups: dict[str, DataGroupInterface]
     _root_directory: Path
@@ -18,7 +22,7 @@ class Analyzer(AnalyzerInterface):
     _dataunit_factories: dict[str, DataUnitFactoryInterface]
     _datagroup_factories: dict[str, DataGroupFactoryInterface]
     _dataunit_handlers: dict[str, tuple[DataRepositoryInterface, DataUnitFactoryInterface]]
-
+    _executor: ExecutorInterface
     '''def __init__(self, groups: dict[str, DataGroupInterface], root_directory: Path) -> None:
         self._groups = groups
         self._root_directory = root_directory'''
@@ -54,6 +58,13 @@ class Analyzer(AnalyzerInterface):
         self._datagroup_factories = {
             'default': DefaultDataGroupFactory()
         }
+        # Executorの設定
+        self._executor = Executor(
+            data_builder=DataBuilder(
+                dataunit_factory = self._dataunit_factories['default'],
+                datagroup_factory = self._datagroup_factories['default']
+                )
+        )
         '''------------------------------------------------------------------'''
 
         # masterの読み込み
@@ -231,3 +242,25 @@ class Analyzer(AnalyzerInterface):
                 units = self._load_units(vault_data_dir, master_data_dir)
                 group = self._load_group(units, group_name, master_group_dir)
                 self._add_group(group)
+
+    #-------------------------
+    #  関数の実行
+    #-------------------------
+    def run(self, exec_context: ExecContext):
+        target_group_names = exec_context.units_selection.keys()
+        groups = []
+        for target_group_name in target_group_names:
+            # 操作対象のグループが存在しているかどうか
+            if not self.exist_group_name(target_group_name):
+                raise ValueError(f"{self.__class__}: {target_group_name} don't exist.")
+            groups.append(self.get_group(target_group_name))
+        new_groups = self._executor.exec(executor_context=exec_context, groups=groups)
+        # 生成されたgroupを格納する前に，既存のgroup名がないかどうかチェックを行う
+        for new_group in new_groups:
+            self._validate_group_not_exists(new_group.name) 
+        # 生成されたnew_groupを格納
+        for new_group in new_groups:
+            self._add_group(new_group=new_group)
+            print(f'{new_group} is in your analyzer. (NO SAVE)')
+            
+            

@@ -7,6 +7,12 @@ from cores.datagroup import DataGroup
 from cores.metas.datagroup_meta import DataGroupMeta
 from cores.metas.dataunit_meta import DataUnitMeta
 
+from cores.default_dataunit_factory import DefaultDataUnitFactory
+from cores.default_datagroup_factory import DefaultDataGroupFactory
+from cores.data_builder import DataBuilder
+from cores.executor import Executor
+from cores.exec_context import ExecContext
+
 
 @pytest.fixture
 def sample_analyzer(tmp_path):
@@ -89,3 +95,43 @@ def test_save(sample_analyzer: Analyzer):
     assert df.equals(loaded_df)
 
 
+def test_run(sample_analyzer: Analyzer):
+    # 実行対象の関数（DataFrameを3倍する）
+    def multiply_data(group1: dict[str, pd.DataFrame], x: int):
+        df = group1["unit1"]
+        new_df = df.copy()
+        new_df["a"] = df["a"] * x
+        return {
+            "newgroup": {
+                "unitX": new_df
+            }
+        }
+
+    # 実行準備
+    unit_factory = DefaultDataUnitFactory()
+    group_factory = DefaultDataGroupFactory()
+    builder = DataBuilder(unit_factory, group_factory)
+    executor = Executor(builder)
+
+    # ExecutorをAnalyzerにセット
+    sample_analyzer._executor = executor
+
+    # 実行コンテキスト
+    context = ExecContext(
+        func=multiply_data,
+        units_selection={"group1": []},
+        kwargs={"x": 3}
+    )
+
+    # 実行
+    sample_analyzer.run(context)
+
+    # 検証
+    assert sample_analyzer.exist_group_name("newgroup")
+    result_group = sample_analyzer.get_group("newgroup")
+    assert "unitX" in result_group.unit_names()
+    result_df = result_group.get_unit("unitX").df
+
+    expected_df = sample_analyzer.get_group("group1").get_unit("unit1").df.copy()
+    expected_df["a"] *= 3
+    assert result_df.equals(expected_df)
