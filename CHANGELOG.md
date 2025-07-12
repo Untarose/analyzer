@@ -16,11 +16,26 @@
 -
 ```
 ---
-## [0.0.18-dev] - 2025-7-12
+## [0.0.19-dev] - 2025-07-12
+### 🚀 追加
+- DataBuilderInterface
+    - 関数実行時に必要
+    - group_to_dict
+        - DataGroup, DataUnitからdataFrameを取り出して，dict[DataGroup.name, dict[DataUnit.name, DataFrame]]にデータ形式を変更する．
+    - dict_to_group
+        - 関数実行時に生成されたdictをlist[DataGroup]に変換する．その後，analyzerではanalyzer.groupsに追加処理を行う．
+- DataBuilder
+    - concrete 
+    - implemented DataBuilderInterface
+    - test
+        - tests/cores/test_data_builder.py
+
+---
+## [0.0.18-dev] - 2025-07-12
 ### 🐛 修正
 - DataFactoryInterfaceに_create_methodの追加
 ---
-## [0.0.17-dev] - 2025-7-12
+## [0.0.17-dev] - 2025-07-12
 ### 🚀 追加
 - ExecContextの修正
 ---
