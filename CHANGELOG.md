@@ -22,6 +22,11 @@
 - 【カテゴリ】内容
 ```
 ---
+## [0.1.3-dev] - 2025-07-13
+### 🐛 修正（Fixed）
+- 【AnalyzerInter_face】内部用メソッドの定義を消去．Analyzer.runの定義の追加，get_groupの削除（内部メソッド化に伴い消去）
+- 【Analyzer】get_groupを内部用メソッド_get_groupに変更
+---
 ## [0.1.2-dev] - 2025-07-13
 ### 🐛 修正（Fixed）
 - 【Analyzer】master読み込み時，nameが○○_rate, ○○_waveform, と読み込まれるはずが，rate, waveformとなってしまった原因を修正

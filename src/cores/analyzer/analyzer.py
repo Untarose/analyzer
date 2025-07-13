@@ -86,7 +86,7 @@ class Analyzer(AnalyzerInterface):
         del self._groups[group_name]
         # TODO: ディレクトリ/ファイルの削除処理も後日実装
 
-    def get_group(self, group_name: str) -> DataGroupInterface:
+    def _get_group(self, group_name: str) -> DataGroupInterface:
         if self.exist_group_name(group_name):
             return self._groups[group_name]
         else:
@@ -104,7 +104,7 @@ class Analyzer(AnalyzerInterface):
     def save_group(self, group_name: str) -> None:
         if not self.exist_group_name(group_name):
             raise ValueError(f"Group {group_name} does not exist")
-        for unit in self.get_group(group_name).units.values():
+        for unit in self._get_group(group_name).units.values():
             self._repositories['csv'].save(
                 unit.path,
                 unit.df
@@ -200,7 +200,7 @@ class Analyzer(AnalyzerInterface):
         if not vault_data_dir.exists() or not vault_data_dir.is_dir():
             return  # データが存在しないなら何もしない
 
-        group = self.get_group(group_name)
+        group = self._get_group(group_name)
 
         for raw_file in vault_data_dir.iterdir():
             if not raw_file.is_file():
@@ -258,7 +258,7 @@ class Analyzer(AnalyzerInterface):
             # 操作対象のグループが存在しているかどうか
             if not self.exist_group_name(target_group_name):
                 raise ValueError(f"{self.__class__}: {target_group_name} don't exist.")
-            groups.append(self.get_group(target_group_name))
+            groups.append(self._get_group(target_group_name))
         new_groups = self._executor.exec(executor_context=exec_context, groups=groups)
         # 生成されたgroupを格納する前に，既存のgroup名がないかどうかチェックを行う
         for new_group in new_groups:

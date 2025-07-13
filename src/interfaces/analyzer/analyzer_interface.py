@@ -1,15 +1,15 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
 from interfaces.data_group.datagroup_interface import DataGroupInterface
+from cores.executor.exec_context import ExecContext
 class AnalyzerInterface(ABC):
     @property
     @abstractmethod
     def root_directory(self) -> Path:
         """
-        データのrootディレクトリを返す
+        rootディレクトリを返す
         """
         pass
-    
     @abstractmethod
     def group_names(self) -> list[str]:
         """
@@ -25,20 +25,6 @@ class AnalyzerInterface(ABC):
         pass
 
     @abstractmethod
-    def get_group(self, group_name: str) -> DataGroupInterface:
-        """
-        指定した名前のグループを返す
-        """
-        pass
-
-    @abstractmethod
-    def _add_group(self, new_group: DataGroupInterface) -> None:
-        """
-        新たなグループを追加する
-        """
-        pass
-
-    @abstractmethod
     def exist_group_name(self, group_name: str) -> bool:
         """
         指定したグループ名が存在するかどうかを返す
@@ -48,6 +34,14 @@ class AnalyzerInterface(ABC):
     def save_group(self, group_name: str) -> None:
         """
         指定したグループをファイルに保存する
+        """
+        pass
+    @abstractmethod
+    def run(self, exec_context: ExecContext) -> None:
+        """
+        関数を実行する
+        関数での返り値が指定されたものであれば，その結果を新しいグループとして登録する．
+        ただし，すでに新しいグループが登録されている場合，すべての新しいグループは登録されない
         """
         pass
 

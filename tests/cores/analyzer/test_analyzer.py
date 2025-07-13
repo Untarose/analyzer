@@ -77,15 +77,15 @@ def test_load_groups_from_vault(tmp_path: Path):
 
     # 確認
     assert analyzer.exist_group_name("group1")
-    group = analyzer.get_group("group1")
+    group = analyzer._get_group("group1")
     assert "group1_waveform" in group.unit_names() or len(group.unit_names()) > 0  # 仮名対応
 
 
 def test_save(sample_analyzer: Analyzer):
     sample_analyzer.save_group('group1')
 
-    save_unit_path = sample_analyzer.get_group('group1').get_unit('unit1').path
-    df = sample_analyzer.get_group('group1').get_unit('unit1').df
+    save_unit_path = sample_analyzer._get_group('group1').get_unit('unit1').path
+    df = sample_analyzer._get_group('group1').get_unit('unit1').df
     save_data_dir = save_unit_path.parent
 
     # assertion
@@ -128,10 +128,10 @@ def test_run(sample_analyzer: Analyzer):
 
     # 検証
     assert sample_analyzer.exist_group_name("newgroup")
-    result_group = sample_analyzer.get_group("newgroup")
+    result_group = sample_analyzer._get_group("newgroup")
     assert "unitX" in result_group.unit_names()
     result_df = result_group.get_unit("unitX").df
 
-    expected_df = sample_analyzer.get_group("group1").get_unit("unit1").df.copy()
+    expected_df = sample_analyzer._get_group("group1").get_unit("unit1").df.copy()
     expected_df["a"] *= 3
     assert result_df.equals(expected_df)
