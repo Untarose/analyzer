@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from datetime import datetime
 from typing import Optional
-from interfaces.meta_interface import MetaInterface
+from interfaces.metas.meta_interface import MetaInterface
 
 @dataclass
 class DataGroupMeta(MetaInterface):
