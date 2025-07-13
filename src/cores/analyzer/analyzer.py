@@ -147,9 +147,12 @@ class Analyzer(AnalyzerInterface):
                 file for file in data_dir.iterdir()
                     if file.is_file()
                 ]
+            print(data_files)
             all_units = []
             for data_path in data_files:
+                print(data_path)
                 name = data_path.stem
+                print('111',name)
                 meta_data_path = meta_path / name
                 all_units += self._load_units_single(name, data_path, meta_data_path)
             return all_units
@@ -172,7 +175,7 @@ class Analyzer(AnalyzerInterface):
         # Master_directoryを読み込む
         master_path = self._root_directory / 'master'
         path_under_master = [
-            path for path in master_path.rglob("*")
+            path for path in master_path.rglob("__DATA__")
             if path.is_dir() and not path.name == "__DATA__"
         ]
         for path in path_under_master:
@@ -181,12 +184,14 @@ class Analyzer(AnalyzerInterface):
             group_name = path.name
             # もしすでにあるディレクトリ名はエラーを出す
             self._validate_group_not_exists(group_name)
-            # unitのロード
-            units = self._load_units(path, path)
-            # groupのロード
-            group = self._load_group(units, group_name, path)
-            # _groupsにセット
-            self._add_group(group)
+            data_path = path / '__DATA__'
+            if data_path.exists():
+                # unitのロード
+                units = self._load_units(data_path, path)
+                # groupのロード
+                group = self._load_group(units, group_name, path)
+                # _groupsにセット
+                self._add_group(group)
 
     def _load_missing_path(self, group_name: str, vault_group_path: Path, master_group_path: Path) -> None:
         vault_data_dir = vault_group_path / '__DATA__'
