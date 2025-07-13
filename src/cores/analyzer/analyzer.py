@@ -257,7 +257,7 @@ class Analyzer(AnalyzerInterface):
         for target_group_name in target_group_names:
             # 操作対象のグループが存在しているかどうか
             if not self.exist_group_name(target_group_name):
-                raise ValueError(f"{self.__class__}: {target_group_name} don't exist.")
+                raise ValueError(f"{self.__class__}: {target_group_name} doesn't exist.")
             groups.append(self._get_group(target_group_name))
         new_groups = self._executor.exec(executor_context=exec_context, groups=groups)
         # 生成されたgroupを格納する前に，既存のgroup名がないかどうかチェックを行う
@@ -268,4 +268,23 @@ class Analyzer(AnalyzerInterface):
             self._add_group(new_group=new_group)
             print(f'{new_group} is in your analyzer. (NO SAVE)')
             
+    #-------------------------
+    #  表示用メソッド
+    #-------------------------
+    def _print_single(self, group: DataGroupInterface):
+        print('---')
+        print(f'###【 name: {group.name}, path: {group.path}')
+        for unit_name, unit in group.units.items():
+            print(f'- {unit_name}, path: {unit.path}')
+            print(f'    - shape: {unit.df.shape}, columns: {",".join(unit.df.columns.astype(str))}')
             
+    def print(self, group_name = None):
+        if group_name:
+            if self.exist_group_name(group_name=group_name):
+                group = self._get_group(group_name=group_name)
+                self._print_single(group=group)
+            else:
+                print(f"{group_name} doesn't exist.")
+        else:
+            for group in self._groups.values():
+                self._print_single(group=group)
