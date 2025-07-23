@@ -81,10 +81,10 @@ class Analyzer(AnalyzerInterface):
         return list(self._groups.keys())
 
     def delete_group(self, group_name: str) -> None:
-        if not self.exist_group_name(group_name):
-            raise ValueError(f"Group '{group_name}' does not exist.")
-        del self._groups[group_name]
-        # TODO: ディレクトリ/ファイルの削除処理も後日実装
+        if self.exist_group_name(group_name):
+            del self._groups[group_name]
+        else:
+            print(f'{self.__class__}: {group_name} is not in groups')
 
     def _get_group(self, group_name: str) -> DataGroupInterface:
         if self.exist_group_name(group_name):
@@ -105,8 +105,9 @@ class Analyzer(AnalyzerInterface):
         if not self.exist_group_name(group_name):
             raise ValueError(f"Group {group_name} does not exist")
         for unit in self._get_group(group_name).units.values():
+            save_path: Path = (unit.path.parent / '__DATA__') / unit.path.name
             self._repositories['csv'].save(
-                unit.path,
+                save_path,
                 unit.df
             )
 
@@ -147,12 +148,9 @@ class Analyzer(AnalyzerInterface):
                 file for file in data_dir.iterdir()
                     if file.is_file()
                 ]
-            print(data_files)
             all_units = []
             for data_path in data_files:
-                print(data_path)
                 name = data_path.stem
-                print('111',name)
                 meta_data_path = meta_path / name
                 all_units += self._load_units_single(name, data_path, meta_data_path)
             return all_units
@@ -179,7 +177,6 @@ class Analyzer(AnalyzerInterface):
             if path.is_dir() and not path.name == "__DATA__"
         ]
         for path in path_under_master:
-            print(path)
             # groupの名前はデータがあるディレクトリの名前
             group_name = path.name
             # もしすでにあるディレクトリ名はエラーを出す
@@ -217,6 +214,7 @@ class Analyzer(AnalyzerInterface):
             for unit in units:
                 if not group.exist_unit_name(unit.name):
                     group.add_unit(unit)
+                    self.save_group(group_name=group.name)
 
 
     def _load_groups_from_vault(self) -> None:
@@ -247,6 +245,7 @@ class Analyzer(AnalyzerInterface):
                 units = self._load_units(vault_data_dir, master_data_dir)
                 group = self._load_group(units, group_name, master_group_dir)
                 self._add_group(group)
+                self.save_group(group_name=group.name)
 
     #-------------------------
     #  関数の実行

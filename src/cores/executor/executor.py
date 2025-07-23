@@ -47,14 +47,14 @@ class Executor(ExecutorInterface):
     
     def _is_expext_result(self, result: object) -> bool:
         if not isinstance(result, dict):
-            print(f"{self.__class__}: some groups is not dict. so all new groups didn't created")
+            print(f"{self.__class__}: some groups is not dict. so all new groups didn't created. Just only Execute your function.")
             return False
         for group_name, unit_dict in result.items():
             if not isinstance(unit_dict, dict):
-                print(f"{self.__class__}: some units is not dict. so all new groups didn't created")
+                print(f"{self.__class__}: some units is not dict. so all new groups didn't created. Just only Execute your function.")
                 return False
             for unit_name, df in unit_dict.items():
                 if not isinstance(df, DataFrame):
-                    print(f"{self.__class__}: some dfs is not Data. so all new groups didn't created")
+                    print(f"{self.__class__}: some dfs is not Data. so all new groups didn't created. Just only Execute your function.")
                     return False
         return True

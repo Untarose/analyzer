@@ -44,3 +44,5 @@ class ExecContext:
             if extra:
                 msg += f"units_selection引数に余計なキー{extra}が存在します。\n"
             raise ValueError(f"ExecContext の検証に失敗しました: \n{msg}")
+        else:
+            print('you can execute Analyzer.run')
