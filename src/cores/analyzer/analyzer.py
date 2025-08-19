@@ -105,9 +105,9 @@ class Analyzer(AnalyzerInterface):
         if not self.exist_group_name(group_name):
             raise ValueError(f"Group {group_name} does not exist")
         for unit in self._get_group(group_name).units.values():
-            save_path: Path = (unit.path.parent / '__DATA__') / unit.path.name
+            print('save_path', unit.path)
             self._repositories['csv'].save(
-                save_path,
+                unit.path,
                 unit.df
             )
 
@@ -138,10 +138,21 @@ class Analyzer(AnalyzerInterface):
                 f"Unsupported file extension: '{ext}'. "
                 f"Supported extensions are: {list(self._dataunit_handlers.keys())}"
             )
-        
+    def _replace_last_vault_to_master(self, path:Path) -> Path:
+        parts = list(path.parts)
+        for i in range(len(parts)):
+            if parts[-i] == "vault":
+                parts[-i] = "master"
+                break
+        return Path(*parts)
+            
 #-------------------------
 # 読み込み用メソッド
 #-------------------------
+## _load_units以降のdata_dirでmeta_dirを置換
+## groupfactory,unitfactory(unit生成時のpathを変更)
+## 全体テスト
+## コミット
     
     def _load_units(self, data_dir: Path, meta_path: Path) -> list[DataUnitInterface]:
             data_files = [
@@ -151,11 +162,11 @@ class Analyzer(AnalyzerInterface):
             all_units = []
             for data_path in data_files:
                 name = data_path.stem
-                meta_data_path = meta_path / name
+                meta_data_path = (meta_path) / name
                 all_units += self._load_units_single(name, data_path, meta_data_path)
             return all_units
 
-    def _load_units_single(self, name: str, data_path: Path, meta_path:Path) -> list[DataUnitInterface]:
+    def _load_units_single(self, name: str, data_path: Path, meta_path: Path) -> list[DataUnitInterface]:
         # 拡張子の取得
         ext = data_path.suffix[1:]
         # 拡張子が対応しているか
@@ -173,9 +184,10 @@ class Analyzer(AnalyzerInterface):
         # Master_directoryを読み込む
         master_path = self._root_directory / 'master'
         path_under_master = [
-            path for path in master_path.rglob("__DATA__")
-            if path.is_dir() and not path.name == "__DATA__"
+            path.parent for path in master_path.rglob("__DATA__")
+            if path.is_dir()# and not path.name == "__DATA__"
         ]
+        print(path_under_master)
         for path in path_under_master:
             # groupの名前はデータがあるディレクトリの名前
             group_name = path.name
@@ -184,13 +196,14 @@ class Analyzer(AnalyzerInterface):
             data_path = path / '__DATA__'
             if data_path.exists():
                 # unitのロード
-                units = self._load_units(data_path, path)
+                units = self._load_units(data_path, data_path)
                 # groupのロード
                 group = self._load_group(units, group_name, path)
                 # _groupsにセット
                 self._add_group(group)
 
     def _load_missing_path(self, group_name: str, vault_group_path: Path, master_group_path: Path) -> None:
+        print(vault_group_path, master_group_path)
         vault_data_dir = vault_group_path / '__DATA__'
         master_data_dir = master_group_path / '__DATA__'
         
@@ -202,19 +215,21 @@ class Analyzer(AnalyzerInterface):
         for raw_file in vault_data_dir.iterdir():
             if not raw_file.is_file():
                 continue
-
+            
             ext = raw_file.suffix[1:]
             self._validate_ext(ext)
-            repository, factory = self._dataunit_handlers[ext]
-            raw_data = repository.load(raw_file)
-
-            # unitのpathはmaster_data_dirをメタとする
-            units = factory.create(raw_data=raw_data, name=group_name, path=master_data_dir)
-
-            for unit in units:
-                if not group.exist_unit_name(unit.name):
-                    group.add_unit(unit)
-                    self.save_group(group_name=group.name)
+            _, factory = self._dataunit_handlers[ext]
+            print(raw_file)
+            unit_names = factory.preview_names(raw_file)
+            if any(not group.exist_unit_name(unit_name) for unit_name in unit_names):
+                unit_base  = raw_file.stem
+                meta_path  = master_data_dir / unit_base
+                units = self._load_units_single(name = str(raw_file.stem), data_path=raw_file, meta_path=self._replace_last_vault_to_master(raw_file))
+                for unit in units:
+                    if not group.exist_unit_name(unit.name):
+                        group.add_unit(unit)
+                        self.save_group(group_name=group.name)
+            
 
 
     def _load_groups_from_vault(self) -> None:
@@ -242,16 +257,21 @@ class Analyzer(AnalyzerInterface):
             else:
                 # まだないグループはすべてのデータが対象
                 self._validate_group_not_exists(group_name)
-                units = self._load_units(vault_data_dir, master_data_dir)
+                units = self._load_units(vault_data_dir, self._replace_last_vault_to_master(vault_data_dir))
                 group = self._load_group(units, group_name, master_group_dir)
                 self._add_group(group)
+                print('group_name',group.name)
+                print('group_path', group.path)
                 self.save_group(group_name=group.name)
 
     #-------------------------
     #  関数の実行
     #-------------------------
     def run(self, exec_context: ExecContext):
-        target_group_names = exec_context.units_selection.keys()
+        # units_selection: arg -> { group: [units...] }
+        target_group_names: set[str] = set()
+        for _, group_to_units in exec_context.units_selection.items():
+            target_group_names.update(group_to_units.keys())
         groups = []
         for target_group_name in target_group_names:
             # 操作対象のグループが存在しているかどうか

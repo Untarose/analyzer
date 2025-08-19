@@ -20,4 +20,9 @@ class BaseDataUnitFactory(DataUnitFactoryInterface):
     def _create_meta(self, name: str, path: Path) -> DataUnitMeta:
         return DataUnitMeta(name=name, path=path)
 
-    
+    @abstractmethod
+    def preview_names(self, path: Path) -> list[str]:
+        """
+        Pathを渡すと、createで作成されるUnit.nameのリストを返す
+        """
+        raise NotImplementedError(f"{self.__class__.__name__}.create() is not implemented.")

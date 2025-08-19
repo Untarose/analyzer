@@ -9,3 +9,7 @@ class DefaultDataUnitFactory(BaseDataUnitFactory):
     def create(self, raw_data: DataFrame, name: str, path: Path) -> list[DataUnitInterface]:
         metadata = self._create_meta(name=name, path=path)
         return [DataUnit(df=raw_data, metadata=metadata)]
+    
+    def preview_names(self, path: Path) -> list[str]:
+        stem = path.stem
+        return [f"{stem}"]

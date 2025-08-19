@@ -36,7 +36,9 @@ class WavDataUnitFactory(BaseDataUnitFactory):
         return [DataUnit(df_rate, rate_meta), DataUnit(df_waveform, waveform_meta)]
     
     
-    
+    def preview_names(self, path: Path) -> List[str]:
+        stem = path.stem
+        return [f"{stem}_waveform", f"{stem}_rate"]
     
 
     

@@ -21,4 +21,12 @@ class DataUnitFactoryInterface(ABC):
         Metaを構築するメソッド
         """
         pass
+    
+    @abstractmethod
+    def preview_names(self, path: Path) -> list[str]:
+        """
+        Pathを渡すと、createで作成されるUnit.nameのリストを返す
+        """
+        pass
+    
         

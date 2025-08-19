@@ -7,7 +7,7 @@ from interfaces.data_group.datagroup_interface import DataGroupInterface
 
 class DataBuilderInterface(ABC):
     @abstractmethod
-    def group_to_dict(self, groups: list[DataGroupInterface], units_selection: dict[str, list[str]]) -> dict[str, dict[str, DataFrame]]:
+    def group_to_dict(self, groups: list[DataGroupInterface], units_selection: dict[str, dict[str, list[str]]]) -> dict[str, dict[str, DataFrame]]:
         """関数で処理するGroupをDictに変換するメソッド
 
         Args:
