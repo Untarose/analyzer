@@ -21,6 +21,20 @@
 ### 🔥 削除（Removed）
 - 【カテゴリ】内容
 ```
+---
+## [0.1.9-dev] - 2025-08-20
+### 🐛 修正（Fixed）
+- 【Analyzer】_load_groups_from_vaultメソッドにて、新しく追加されたGroupがある、または、新しく追加されたUnitがあるなら通知するように
+### 🚀 追加（Added）
+- 【load_sequence.puml】Analyzerでユーザがroot_directoryを指定して起動した際のデータの読み込み過程のシーケンス図を追加
+---
+## [0.1.8-dev] - 2025-08-19
+### 🐛 修正（Fixed）
+- 【Analyzer】saveメソッドのパスを修正し、エラーハンドリングを強化
+- 【Analyzer】_load_groups_from_master, _load_groups_from_vault, _load_units, _load_units_singleを修正し、適切なunits.pathが設定されるように
+### 🚀 追加（Added）
+- 【UnitFactory】preview_namesメソッドを作成し、作成されるUnit名を作成前に表示できるように
+---
 ## [0.1.7-dev] - 2025-07-23
 ### 🐛 修正（Fixed）
 - 【README】README.mdに今後の機能拡張や運用方法に関する展望を追加
