@@ -125,7 +125,7 @@ class Analyzer(AnalyzerInterface):
             print('Please create a "master" directory and place your original data inside it.')
             raise FileNotFoundError(f'Missing reqired directory: {master_path}')
     
-    def _validate_group_not_exists(self, group_name) -> None:
+    def _validate_group_not_exists(self, group_name:str) -> None:
         if self.exist_group_name(group_name):
             raise ValueError(f'{self.__class__.__name__}: DataGroup "{group_name}" already exists')
         
@@ -254,15 +254,15 @@ class Analyzer(AnalyzerInterface):
                     vault_group_path=vault_group_dir,
                     master_group_path=master_group_dir
                 )
+                print(f"new some units is added in '{group_name}'.")
             else:
                 # まだないグループはすべてのデータが対象
                 self._validate_group_not_exists(group_name)
                 units = self._load_units(vault_data_dir, self._replace_last_vault_to_master(vault_data_dir))
                 group = self._load_group(units, group_name, master_group_dir)
                 self._add_group(group)
-                print('group_name',group.name)
-                print('group_path', group.path)
                 self.save_group(group_name=group.name)
+                print(f"new group: '{group_name}' is added.")
 
     #-------------------------
     #  関数の実行

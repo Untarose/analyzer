@@ -1,0 +1,75 @@
+@startuml
+actor User
+
+participant Analyzer
+participant DataRepository
+participant DataUnitFactory
+participant DataGroupFactory
+
+database vault
+database master
+
+User -> Analyzer : new Analyzer(root_directory)
+activate Analyzer
+    Analyzer ->> Analyzer : _load_groups_from_master()
+    loop for each group_dir in master
+        activate Analyzer
+            Analyzer ->> Analyzer: _load_units()
+            activate Analyzer
+            loop for each file in group_dir
+                Analyzer ->> Analyzer: _load_units_single()
+                activate Analyzer
+                Analyzer -> DataRepository: load()
+                DataRepository -> master: loading a csv file
+                master -> DataRepository: get raw_data: pd.DataFrame
+                DataRepository -> Analyzer: return raw_data
+                Analyzer -> DataUnitFactory: create(raw_data)
+                activate DataUnitFactory
+                DataUnitFactory ->> DataUnitFactory: set pd.DataFrame, name, path in units
+                DataUnitFactory -> Analyzer: return units
+                deactivate DataUnitFactory
+                Analyzer -> Analyzer: return units
+                deactivate Analyzer
+            end
+            Analyzer -> Analyzer: return all_units
+            deactivate Analyzer
+            Analyzer -> DataGroupFactory: create(all_units)
+            activate DataGroupFactory
+            DataGroupFactory ->> DataGroupFactory: set units, name, path
+            DataGroupFactory -> Analyzer: return group
+            deactivate DataGroupFactory
+            Analyzer ->> Analyzer: self._groups[group.name] = group
+        
+        deactivate Analyzer
+    end
+    Analyzer ->> Analyzer: load_groups_from_vault()
+    activate Analyzer
+        loop for each group_dir in vault  
+            alt if group_name is exist in Master
+                alt if any unit_name is not exist in Master
+                    
+                    Analyzer ->> Analyzer: load_missing_path()
+                    activate Analyzer
+                        Analyzer ->> Analyzer: load_units_single() (omit: for same procedure in master)
+                        Analyzer -> DataUnitFactory: (omit: for same procedure in master)
+                        Analyzer ->> Analyzer: self._groups[group_name].add_unit(new_unit)
+                        Analyzer ->> Analyzer: save_groups(group_name): group which added new units is saved
+                        
+                    deactivate Analyzer
+                end
+            else if group_name is not exist in Master
+                activate Analyzer
+                    
+                    Analyzer ->> Analyzer:(omit: for same procedure in master)
+                    
+                    Analyzer ->> Analyzer: self.save_group(group_name): new added group is saved
+                    
+                    
+                deactivate Analyzer
+            end
+            
+        end
+    deactivate Analyzer
+    User -> Analyzer: ANY OPERATIONS
+
+@enduml
